@@ -25,8 +25,12 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val formattedTip = NumberFormat.getCurrencyInstance().format(0)
-        binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
+        if (savedInstanceState != null) {
+            binding.tipResult.text = savedInstanceState.getString("tip")
+        } else {
+            val formattedTip = NumberFormat.getCurrencyInstance().format(0)
+            binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
+        }
 
         binding.calculateButton.setOnClickListener {
             calculateTip()
@@ -53,5 +57,10 @@ class MainActivity : AppCompatActivity() {
 
         val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
         binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("tip", binding.tipResult.text.toString())
     }
 }
